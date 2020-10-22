@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:engine
+    driver-class-name: org.h2.Driver
+    data-username: sa
+    password:
+
+
+bugatti:
+  engine:
+    realtime:
+        core-pool-size: 160
+        max-pool-size: 180
+        queue-capacity: 200
+
+logging:
+  level:
+    org.apache: FATAL
+    org.springframework: INFO
+    org.springframework.security.web.util : FATAL
+    com.example.bugatti: DEBUG
+    com.example: INFO

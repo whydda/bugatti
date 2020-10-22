@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: ${car.project.profile}
+
+bugatti:
+  engine:
+    realtime:
+      on-off: true
