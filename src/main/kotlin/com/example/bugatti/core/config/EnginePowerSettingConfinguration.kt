@@ -15,8 +15,8 @@ import java.util.concurrent.Executor
 class EnginePowerSettingConfinguration(val bugatiProperties: BugattiProperties) {
 
 
-    @Bean(name = ["notificationThreadPoolTaskExecutor"])
-    fun threadPoolTaskExecutor(): Executor {
+    @Bean(name = ["realTimeThreadPoolTaskExecutor"])
+    fun realTimeExecutor(): Executor {
         val realTimeExecutor = ThreadPoolTaskExecutor()
         realTimeExecutor.corePoolSize = bugatiProperties.engine.realtime.corePoolSize
         realTimeExecutor.maxPoolSize = bugatiProperties.engine.realtime.maxPoolSize
