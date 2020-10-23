@@ -6,3 +6,5 @@ bugatti:
   engine:
     realtime:
       on-off: true
+    topic-subscription:
+      on-off: true

@@ -5,18 +5,20 @@ spring:
     data-username: sa
     password:
 
-
 bugatti:
   engine:
     realtime:
-        core-pool-size: 160
-        max-pool-size: 180
-        queue-capacity: 200
+      core-pool-size: 160
+      max-pool-size: 180
+      queue-capacity: 200
+    topic-subscription:
+      core-pool-size: 240
+      max-pool-size: 270
+      queue-capacity: 300
 
 logging:
   level:
     org.apache: FATAL
     org.springframework: INFO
-    org.springframework.security.web.util : FATAL
     com.example.bugatti: DEBUG
     com.example: INFO

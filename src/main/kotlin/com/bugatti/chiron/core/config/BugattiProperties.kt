@@ -7,9 +7,15 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties("bugatti")
 data class BugattiProperties(val engine : Engine)
 
-data class Engine(var realtime : RealTime)
+data class Engine(var realtime : RealTime, var topicSubscription : TopicSubscription)
 
 data class RealTime(
+        var corePoolSize : Int,
+        var maxPoolSize : Int,
+        var queueCapacity : Int
+)
+
+data class TopicSubscription(
         var corePoolSize : Int,
         var maxPoolSize : Int,
         var queueCapacity : Int

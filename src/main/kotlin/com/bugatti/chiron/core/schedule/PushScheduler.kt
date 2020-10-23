@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class PushScheduler(
-        @Value("\${bugatti.engine.realtime.on-off}")  private val onOff: Boolean
+        @Value("\${bugatti.engine.realtime.on-off}")  private val realTimeOnOff: Boolean,
+        @Value("\${bugatti.engine.topic-subscription.on-off}")  private val topicSubscriptionOnOff: Boolean
 ) {
 
     companion object {
@@ -20,8 +21,11 @@ class PushScheduler(
 
     @Scheduled(fixedDelay = 10000)
     fun startTheEngine(){
-        if(onOff){
-            LOGGER.info("realtime engine on/off {}", onOff);
+        if(realTimeOnOff){
+            LOGGER.info("realtime engine on/off {}", realTimeOnOff);
+        }
+        if(topicSubscriptionOnOff){
+            LOGGER.info("topic subscription engine on/off {}", topicSubscriptionOnOff);
         }
     }
 
