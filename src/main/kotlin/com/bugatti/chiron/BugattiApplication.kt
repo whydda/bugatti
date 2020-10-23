@@ -1,6 +1,6 @@
-package com.example.bugatti
+package com.bugatti.chiron
 
-import com.example.bugatti.core.config.BugattiProperties
+import com.bugatti.chiron.core.config.BugattiProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication

@@ -1,4 +1,4 @@
-package com.example.bugatti.core.config
+package com.bugatti.chiron.core.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

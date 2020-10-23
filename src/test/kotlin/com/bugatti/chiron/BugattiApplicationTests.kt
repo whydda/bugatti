@@ -1,4 +1,4 @@
-package com.example.bugatti
+package com.bugatti.chiron
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

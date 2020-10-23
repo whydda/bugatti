@@ -1,4 +1,4 @@
-package com.example.bugatti.core.schedule
+package com.bugatti.chiron.core.schedule
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
