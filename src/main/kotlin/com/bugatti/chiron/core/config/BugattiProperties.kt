@@ -12,11 +12,13 @@ data class Engine(var realtime : RealTime, var topicSubscription : TopicSubscrip
 data class RealTime(
         var corePoolSize : Int,
         var maxPoolSize : Int,
-        var queueCapacity : Int
+        var queueCapacity : Int,
+        val onOff: Boolean
 )
 
 data class TopicSubscription(
         var corePoolSize : Int,
         var maxPoolSize : Int,
-        var queueCapacity : Int
+        var queueCapacity : Int,
+        val onOff: Boolean
 )

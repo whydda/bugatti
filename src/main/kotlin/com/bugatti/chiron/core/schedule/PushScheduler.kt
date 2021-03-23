@@ -1,5 +1,7 @@
 package com.bugatti.chiron.core.schedule
 
+import com.bugatti.chiron.core.config.BugattiProperties
+import com.bugatti.chiron.core.service.PushService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Scheduled
@@ -11,21 +13,23 @@ import org.springframework.stereotype.Component
 
 @Component
 class PushScheduler(
-        @Value("\${bugatti.engine.realtime.on-off}")  private val realTimeOnOff: Boolean,
-        @Value("\${bugatti.engine.topic-subscription.on-off}")  private val topicSubscriptionOnOff: Boolean
+        val bugatiProperties: BugattiProperties,
+        val pushService: PushService
 ) {
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(PushScheduler::class.java)
+        private val LOGGER = LoggerFactory.getLogger(this::class.java)
     }
 
     @Scheduled(fixedDelay = 10000)
     fun startTheEngine(){
-        if(realTimeOnOff){
-            LOGGER.info("realtime engine on/off {}", realTimeOnOff);
+        if(bugatiProperties.engine.realtime.onOff){
+            LOGGER.info("realtime engine on/off {}", bugatiProperties.engine.realtime.onOff);
+            pushService.realtime()
         }
-        if(topicSubscriptionOnOff){
-            LOGGER.info("topic subscription engine on/off {}", topicSubscriptionOnOff);
+        if(bugatiProperties.engine.topicSubscription.onOff){
+            LOGGER.info("topic subscription engine on/off {}", bugatiProperties.engine.topicSubscription.onOff);
+            pushService.subscription()
         }
     }
 

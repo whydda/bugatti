@@ -11,10 +11,12 @@ bugatti:
       core-pool-size: 160
       max-pool-size: 180
       queue-capacity: 200
+      on-off: true
     topic-subscription:
       core-pool-size: 240
       max-pool-size: 270
       queue-capacity: 300
+      on-off: true
 
 logging:
   level:
