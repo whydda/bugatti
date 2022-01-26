@@ -1,12 +1,5 @@
 package com.bugatti.chiron.core.schedule
 
-import com.amazonaws.services.sqs.AmazonSQS
-import com.amazonaws.services.sqs.model.SendMessageBatchRequest
-import com.amazonaws.services.sqs.model.SendMessageBatchRequestEntry
-import com.bugatti.chiron.core.component.AWSSqsComponent
-import com.bugatti.chiron.core.model.dto.SqsPayload
-import com.bugatti.chiron.core.utils.CommonUtils
-import com.bugatti.chiron.core.utils.JsonUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.annotation.Async
