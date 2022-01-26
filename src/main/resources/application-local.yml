@@ -5,6 +5,12 @@ spring:
     data-username: sa
     password:
 
+aws:
+  region:
+  sqs:
+    test-queue:
+    test-deadletter-queue:
+
 bugatti:
   engine:
     realtime:
@@ -15,6 +21,10 @@ bugatti:
       core-pool-size: 240
       max-pool-size: 270
       queue-capacity: 300
+    mass:
+      core-pool-size: 80
+      max-pool-size: 90
+      queue-capacity: 100
 
 logging:
   level:

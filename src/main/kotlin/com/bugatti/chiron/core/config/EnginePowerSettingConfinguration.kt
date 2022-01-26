@@ -36,4 +36,15 @@ class EnginePowerSettingConfinguration(val bugatiProperties: BugattiProperties) 
         topicSubscriptionExecutor.initialize()
         return topicSubscriptionExecutor
     }
+
+    @Bean(name = ["massThreadPoolTaskExecutor"])
+    fun massTimeExecutor(): Executor {
+        val topicSubscriptionExecutor = ThreadPoolTaskExecutor()
+        topicSubscriptionExecutor.corePoolSize = bugatiProperties.engine.topicSubscription.corePoolSize
+        topicSubscriptionExecutor.maxPoolSize = bugatiProperties.engine.topicSubscription.maxPoolSize
+        topicSubscriptionExecutor.setQueueCapacity(bugatiProperties.engine.topicSubscription.queueCapacity)
+        topicSubscriptionExecutor.setThreadNamePrefix("[~TopicSubscriptionEngine~]")
+        topicSubscriptionExecutor.initialize()
+        return topicSubscriptionExecutor
+    }
 }

@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+val jackson = "2.10.1"
 
 plugins {
     id("org.springframework.boot") version "2.3.4.RELEASE"
@@ -23,6 +24,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -34,6 +36,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    implementation("com.amazonaws:aws-java-sdk-sqs:1.11.641")
+    // Jackson
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jackson}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jackson}")
 }
 
 tasks.withType<Test> {
@@ -45,4 +51,8 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
     }
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.4"
 }

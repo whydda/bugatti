@@ -1,6 +1,7 @@
 spring:
   profiles:
-    active: ${car.project.profile}
+    active: ${car.project.profile:local}
+
 
 bugatti:
   engine:
@@ -8,3 +9,8 @@ bugatti:
       on-off: true
     topic-subscription:
       on-off: true
+    mass:
+      on-off: true
+
+server:
+  port: 8888

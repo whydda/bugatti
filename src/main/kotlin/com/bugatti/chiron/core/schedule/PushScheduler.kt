@@ -1,34 +1,124 @@
 package com.bugatti.chiron.core.schedule
 
+import com.amazonaws.services.sqs.AmazonSQS
+import com.amazonaws.services.sqs.model.SendMessageBatchRequest
+import com.amazonaws.services.sqs.model.SendMessageBatchRequestEntry
+import com.bugatti.chiron.core.component.AWSSqsComponent
+import com.bugatti.chiron.core.model.dto.SqsPayload
+import com.bugatti.chiron.core.utils.CommonUtils
+import com.bugatti.chiron.core.utils.JsonUtils
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import java.util.concurrent.Executor
 
-/**
- * Created by whydda on 10월, 2020
- */
-
+@Suppress("UNREACHABLE_CODE")
 @Component
 class PushScheduler(
-        @Value("\${bugatti.engine.realtime.on-off}")  private val realTimeOnOff: Boolean,
-        @Value("\${bugatti.engine.topic-subscription.on-off}")  private val topicSubscriptionOnOff: Boolean
+    private val amazonSQS: AmazonSQS,
+    private val awsSqsComponent: AWSSqsComponent,
+    private var realTimeThreadPoolTaskExecutor: Executor,
+    @Value("\${bugatti.engine.realtime.on-off}") private val realTimeOnOff: Boolean,
+    @Value("\${bugatti.engine.topic-subscription.on-off}") private val topicSubscriptionOnOff: Boolean,
+    @Value("\${bugatti.engine.mass.on-off}") private val massOnOff: Boolean,
+    @Value("\${aws.sqs.test-queue}") private val queueUrl: String
 ) {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(PushScheduler::class.java)
     }
 
-    @Scheduled(fixedDelay = 10000)
-    fun startTheEngine(){
-        if(realTimeOnOff){
-            LOGGER.info("realtime engine on/off {}", realTimeOnOff);
+    @Async
+    @Scheduled(fixedDelay = 1000)
+    fun startTheEngine() {
+        if (realTimeOnOff) {
+            val runnable = object : Runnable {
+                override fun run() {
+                    val messageList = awsSqsComponent.getMessageListInQueueToString()
+                    if (messageList.isEmpty()) {
+                        return
+                    }
+                    for (message in messageList) {
+                        runCatching {
+                            val notification = JsonUtils.deserialize(message.body, SqsPayload::class.java)
+                            LOGGER.info("<1> realtime engine message : {}", message.body)
+                        }.getOrThrow()
+                    }
+                }
+            }
+            realTimeThreadPoolTaskExecutor.execute(runnable)
         }
-        if(topicSubscriptionOnOff){
-            LOGGER.info("topic subscription engine on/off {}", topicSubscriptionOnOff);
+
+    }
+
+    @Async
+    @Scheduled(fixedDelay = 1000)
+    fun startTheEngine2() {
+        if (topicSubscriptionOnOff) {
+            val runnable = object : Runnable {
+                override fun run() {
+                    val messageList = awsSqsComponent.getMessageListInQueueToString()
+                    if (messageList.isEmpty()) {
+                        return
+                    }
+                    for (message in messageList) {
+                        runCatching {
+                            val notification = JsonUtils.deserialize(message.body, SqsPayload::class.java)
+                            LOGGER.info("topic subscription engine message : {}", message.body)
+                        }.getOrThrow()
+                    }
+                }
+            }
+            realTimeThreadPoolTaskExecutor.execute(runnable)
         }
     }
 
+    @Async
+    @Scheduled(fixedDelay = 1000)
+    fun startTheEngine3() {
+        if (massOnOff) {
+            val runnable = object : Runnable {
+                override fun run() {
+                    val messageList = awsSqsComponent.getMessageListInQueueToString()
+                    if (messageList.isEmpty()) {
+                        return
+                    }
+                    for (message in messageList) {
+                        runCatching {
+                            val notification = JsonUtils.deserialize(message.body, SqsPayload::class.java)
+                            LOGGER.info("mass engine message : {}", message.body)
+                        }.getOrThrow()
+                    }
+                }
+            }
+            realTimeThreadPoolTaskExecutor.execute(runnable)
+        }
+    }
+
+    @Async
+    @Scheduled(fixedDelay = 1000)
+    fun putMessages() {
+        var groupId = 0
+        while (true) {
+            ++groupId
+            val messages = mutableListOf<SendMessageBatchRequestEntry>()
+            for (i in 1..10) {
+                val id = CommonUtils.getId()
+                messages.add(
+                    SendMessageBatchRequestEntry("${id}", JsonUtils.serialize(SqsPayload(id, "안녕하시오 $id")))
+                        .withMessageGroupId("$groupId")
+                        .withMessageDeduplicationId("${id}")
+                )
+                amazonSQS.sendMessageBatch(
+                    SendMessageBatchRequest()
+                        .withQueueUrl(queueUrl)
+                        .withEntries(messages)
+                )
+            }
+        }
+    }
 }
 
 
