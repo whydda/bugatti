@@ -8,8 +8,8 @@ spring:
 aws:
   region:
   sqs:
-    test-queue:
-    test-deadletter-queue:
+    test-queue: https://www.naver.com
+    test-deadletter-queue: https://www.naver.com
 
 bugatti:
   engine:

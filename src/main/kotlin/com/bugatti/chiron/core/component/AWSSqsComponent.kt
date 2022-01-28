@@ -19,16 +19,16 @@ class AWSSqsComponent(
         return amazonSQS.receiveMessage(request).messages ?: listOf()
     }
 
-    suspend fun doneMessageInQueue(message: Message) {
+    fun doneMessageInQueue(message: Message) {
         val request = DeleteMessageRequest(testQueueUrl, message.receiptHandle)
         amazonSQS.deleteMessage(request)
     }
 
-    suspend fun setMessageInQueue(message: String) {
+    fun setMessageInQueue(message: String) {
         amazonSQS.sendMessage(SendMessageRequest(testQueueUrl, message))
     }
 
-    suspend fun setMesagesBatchInQueue(messages: List<SendMessageBatchRequestEntry>) {
+    fun setMesagesBatchInQueue(messages: List<SendMessageBatchRequestEntry>) {
         amazonSQS.sendMessageBatch(SendMessageBatchRequest(testQueueUrl, messages))
     }
 
@@ -40,16 +40,16 @@ class AWSSqsComponent(
         return amazonSQS.receiveMessage(request).messages ?: listOf()
     }
 
-    suspend fun doneMessageInDeadLetterQueue(message: Message) {
+    fun doneMessageInDeadLetterQueue(message: Message) {
         val request = DeleteMessageRequest(testDeadLetterQueueUrl, message.receiptHandle)
         amazonSQS.deleteMessage(request)
     }
 
-    suspend fun setMessageInDeadLetterQueue(message: String) {
+    fun setMessageInDeadLetterQueue(message: String) {
         amazonSQS.sendMessage(SendMessageRequest(testDeadLetterQueueUrl, message))
     }
 
-    suspend fun setMesageInDeadLetterQueue(message: String) {
+    fun setMesageInDeadLetterQueue(message: String) {
         SendMessageRequest(testDeadLetterQueueUrl, message)
     }
 }
